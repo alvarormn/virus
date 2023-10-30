@@ -1,0 +1,39 @@
+<!-- FILEPATH: /Users/alvaro/work/virus/index.html -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Tomar foto con la cámara del smartphone</title>
+    </head>
+    <body>
+        <h1>Tomar foto con la cámara del smartphone</h1>
+        <video id="video" width="640" height="480" autoplay></video>
+        <button id="snap">Tomar foto</button>
+        <canvas id="canvas" width="640" height="480"></canvas>
+        <script>
+            // Verificar si el navegador es compatible con la API de MediaDevices
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Obtener acceso a la cámara
+                navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                    var video = document.getElementById('video');
+                    video.srcObject = stream;
+                    video.play();
+                }).catch(function(error) {
+                    console.error('Error al obtener acceso a la cámara', error);
+                });
+
+                // Tomar foto
+                var canvas = document.getElementById('canvas');
+                var context = canvas.getContext('2d');
+                var video = document.getElementById('video');
+                var snapButton = document.getElementById('snap');
+                snapButton.addEventListener('click', function() {
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                });
+            } else {
+                console.error('La API de MediaDevices no es compatible con este navegador');
+            }
+        </script>
+    </body>
+</html>
